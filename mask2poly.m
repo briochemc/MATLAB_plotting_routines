@@ -50,7 +50,7 @@ end
 
 % run contour computation algorithm first
 P = rmfield(contourcs(double(mask),[0.5 0.5]),'Level');
-P().IsFilled = [];
+[P.IsFilled] = deal([]);
 
 % check for open contours (those who touches one or more edges)
 flag = arrayfun(@(p)p.X(end)-p.X(1),P)~=0 | arrayfun(@(p)p.Y(end)-p.Y(1),P)~=0;
