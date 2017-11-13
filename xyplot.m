@@ -26,6 +26,8 @@ end
 % labels and axis stuff
 set(gca,'YTick',opt.yTicks);
 set(gca,'YTickLabel',opt.yTickLabels);
+ylabel(opt.yLabel) ;
+xlabel(opt.xLabel) ;
 set(gca,'XTick',opt.xTicks);
 set(gca,'XTickLabel',opt.xTickLabels);
 
@@ -58,7 +60,6 @@ axis([xb2(1) xb2(end) -90 90]);
 %caxis(opt.clevs([2 end]));
 h = gca;
 
-
 if isfield(opt,'latex')
-  text(40,40,opt.latex,'horizontalAlignment','left','verticalAlignment','baseline','interpreter','latex','fontsize',16)
+  text(50,34,opt.latex,'horizontalAlignment','left','verticalAlignment','baseline','interpreter','latex','fontsize',16)
 end
