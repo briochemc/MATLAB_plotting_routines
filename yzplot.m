@@ -26,8 +26,7 @@ else
     contour(y2,z2,x2d2,opt.clevs(1:2:end),'k','linewidth',1.5) ;
     contour(y2,z2,x2d2,opt.clevs(2:2:end),'k','linewidth',0.5) ;
   else
-    contourf(y2,z2,x2d2,opt.clevs) ;
-    h = gca;
+    h = contourf(y2,z2,x2d2,opt.clevs) ;
   end
 end
 
