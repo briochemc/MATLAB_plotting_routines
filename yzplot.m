@@ -25,10 +25,11 @@ else
     hold on
     contour(y2,z2,x2d2,opt.clevs(1:2:end),'k','linewidth',1.5) ;
     contour(y2,z2,x2d2,opt.clevs(2:2:end),'k','linewidth',0.5) ;
-  elseif isfield(opt,'dclevs')
+  elseif isfield(opt,'dash_clevs')
     h = contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
     hold on
-    contour(y2,z2,x2d2,opt.dclevs,'k') ;
+    contour(y2,z2,x2d2,opt.line_clevs,'k') ;
+    contour(y2,z2,x2d2,opt.dash_clevs,'k--') ;
   else
     h = contourf(y2,z2,x2d2,opt.clevs) ;
   end
