@@ -56,7 +56,7 @@ end
 % Add white contours if wclevs is given in opt
 if isfield(opt,'wclevs')
   hold on
-  if (numel(wclevs) == 1) opt.wclevs = kron([1 1],opt.wclevs) ; end ;
+  if (numel(opt.wclevs) == 1) opt.wclevs = kron([1 1],opt.wclevs) ; end ;
   contour(y2,z2,x2d2,opt.wclevs,'linecolor',[1 1 1]) ;
 end
 
