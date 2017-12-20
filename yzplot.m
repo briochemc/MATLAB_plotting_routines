@@ -6,7 +6,7 @@ yb = [opt.grid.yv(1)-opt.grid.dyt(1) opt.grid.yv] ;
 zb = [opt.grid.zw opt.grid.zw(end)+opt.grid.dzt(end)] ;
 
 %zb2 = -[-10 zb 5800 6000] ;
-zb2 = -[ zb 5800 6000] ;
+zb2 = -[zb 5800 6000] ;
 y2 = opt.grid.yt ;
 %z2 = -[0 opt.grid.zt 5750 5850] ;
 z2 = -[opt.grid.zt 5750 5850] ;
@@ -25,6 +25,10 @@ else
     hold on
     contour(y2,z2,x2d2,opt.clevs(1:2:end),'k','linewidth',1.5) ;
     contour(y2,z2,x2d2,opt.clevs(2:2:end),'k','linewidth',0.5) ;
+  elseif isfield(opt,'dclevs')
+    h = contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
+    hold on
+    contour(y2,z2,x2d2,opt.dclevs,'k') ;
   else
     h = contourf(y2,z2,x2d2,opt.clevs) ;
   end
