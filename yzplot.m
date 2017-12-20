@@ -47,10 +47,17 @@ else
   xlabel(opt.xlabel);
 end
 
+% Add potential density contours if given in opt
 if isfield(opt,'pden')
   hold on
   pden2 = [opt.pden;nan(2,size(x2d,2))] ;
   contour(y2,z2,pden2-1e3,opt.pden_levs,'linecolor',[0 0 0]) ;
+end
+
+% Add white contours if wclevs is given in opt
+if isfield(opt,'wclevs')
+  hold on
+  contour(y2,z2,x2d2,opt.wclevs,'linecolor',[1 1 1]) ;
 end
 
 % fill in coast
@@ -89,6 +96,5 @@ if isfield(opt,'latex')
 elseif isfield(opt,'txt')
   text(70,-5.5e3,opt.txt,'horizontalAlignment','center','fontsize',12)
 end
-
 
 
