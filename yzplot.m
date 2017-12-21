@@ -2,36 +2,39 @@ function h = yzplot(x2d,opt)
 % yzplot plots the filled contour of x2d where x2d's x-axis is latitude
 % and its y-axis is depth.
 
+%%-----------------------------------------------------%%
+%%                Plot the filled contour              %%
+%%-----------------------------------------------------%%
+% set in larger grid and extrapolate NaNs
 y2 = opt.grid.yt ;
 z2 = -[opt.grid.zt sum(opt.grid.dzt) sum(opt.grid.dzt)+100] ;
 A2 = [x2d;nan(2,size(x2d,2))] ;
-
 x2d2 = extrapolate_nans_fast(extrapolate_nans_fast(A2)) ;
-if isfield(opt,'pden')
-  contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
-  h = gca;
-else
-  if isfield(opt,'one_in_two')
-    contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
-    h = gca;
-    hold on
-    contour(y2,z2,x2d2,opt.clevs(1:2:end),'k','linewidth',1.5) ;
-    contour(y2,z2,x2d2,opt.clevs(2:2:end),'k','linewidth',0.5) ;
-  elseif isfield(opt,'dash_clevs')
-    h = contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
-    hold on
-    contour(y2,z2,x2d2,opt.clevs,'linewidth',1) ;
-    contour(y2,z2,x2d2,opt.line_clevs,'k','linewidth',1) ;
-    contour(y2,z2,x2d2,opt.dash_clevs,'k--','linewidth',1) ;
-  else
-    h = contourf(y2,z2,x2d2,opt.clevs) ;
-  end
+% plot thick contour lines first (so that these fill the gaps when printing)
+contour(y2,z2,x2d2,opt.clevs,'linewidth',2) ;
+hold on
+h = contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
+
+%%-----------------------------------------------------%%
+%%  Plot the additional contours requested in options  %%
+%%-----------------------------------------------------%%
+if isfield(opt,'pden') % add in potential density if required
+  pden2 = [opt.pden;nan(2,size(x2d,2))] ;
+  contour(y2,z2,pden2-1e3,opt.pden_levs,'k') ;
+end
+if isfield(opt,'dash_clevs') % add in dashed
+  contour(y2,z2,x2d2,opt.dash_clevs,'k--') ;
+end
+if isfield(opt,'black_clevs')
+  contour(y2,z2,x2d2,opt.black_clevs,'k') ;
+end
+if isfield(opt,'white_clevs')
+  contour(y2,z2,x2d2,opt.white_clevs,'w') ;
 end
 
-
-% make nanContourf
-
-% labels and axis stuff
+%%-----------------------------------------------------%%
+%%              Labels and Axis details                %%
+%%-----------------------------------------------------%%
 set(gca,'YTick',opt.yTicks);
 set(gca,'YTickLabel',opt.yTickLabels);
 set(gca,'XTick',opt.xTicks);
@@ -42,20 +45,6 @@ if isfield(opt,'fontsize')
 else
   ylabel(opt.ylabel);
   xlabel(opt.xlabel);
-end
-
-% Add potential density contours if given in opt
-if isfield(opt,'pden')
-  hold on
-  pden2 = [opt.pden;nan(2,size(x2d,2))] ;
-  contour(y2,z2,pden2-1e3,opt.pden_levs,'linecolor',[0 0 0]) ;
-end
-
-% Add white contours if wclevs is given in opt
-if isfield(opt,'wclevs')
-  hold on
-  if (numel(opt.wclevs) == 1) opt.wclevs = kron([1 1],opt.wclevs) ; end ;
-  contour(y2,z2,x2d2,opt.wclevs,'linecolor',[1 1 1]) ;
 end
 
 %%-----------------------------------------------------%%
