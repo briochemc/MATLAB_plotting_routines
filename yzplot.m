@@ -1,20 +1,12 @@
-function h = yzplot_v4(x2d,opt)
-% latlon is 2x1 and is 0 or 1 for plotting lat and lon
+function h = yzplot(x2d,opt)
+% yzplot plots the filled contour of x2d where x2d's x-axis is latitude
+% and its y-axis is depth.
 
-% make border coordinates
-yb = [opt.grid.yv(1)-opt.grid.dyt(1) opt.grid.yv] ;
-zb = [opt.grid.zw opt.grid.zw(end)+opt.grid.dzt(end)] ;
-
-%zb2 = -[-10 zb 5800 6000] ;
-zb2 = -[zb 5800 6000] ;
 y2 = opt.grid.yt ;
-%z2 = -[0 opt.grid.zt 5750 5850] ;
-z2 = -[opt.grid.zt 5750 5850] ;
-
-%A2 = [nan(1,size(x2d,2));x2d;nan(2,size(x2d,2))] ;
+z2 = -[opt.grid.zt sum(opt.grid.dzt) sum(opt.grid.dzt)+100] ;
 A2 = [x2d;nan(2,size(x2d,2))] ;
 
-x2d2 = inpaint_nans3(A2) ;
+x2d2 = extrapolate_nans_fast(A2) ;
 if isfield(opt,'pden')
   contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
   h = gca;
@@ -65,17 +57,19 @@ if isfield(opt,'wclevs')
   contour(y2,z2,x2d2,opt.wclevs,'linecolor',[1 1 1]) ;
 end
 
-% fill in coast
-% filling nans
-% black and white z
+%%-----------------------------------------------------%%
+%%       fill in land points (NaN) with gray color     %%
+%%-----------------------------------------------------%%
+% make border coordinates
+yb = [opt.grid.yv(1)-opt.grid.dyt(1) opt.grid.yv] ;
+zb = [opt.grid.zw opt.grid.zw(end)+opt.grid.dzt(end)] ;
+zb2 = -[zb zb(end)+50 ceil((zb(end)+50)*1e-3)*1e3] ;
+
 z_bw = zeros(size(A2)) ;
 z_bw(find(isnan(A2))) = 1 ;
-% gray color to fill the nans ; can be changed
 gray = .8*[1 1 1] ;
-%h = image(x3,opt.opt.grid.yt,z_bw) ;
 P = mask2poly(boolean(z_bw)) ;
-%numel(P) 
-orient = [0] ;
+orient = [0] ; % This needs to be set manually unfortunately
 for ii = 1:numel(orient)
   hold on
   if orient(ii) 
@@ -91,15 +85,13 @@ for ii = 1:numel(orient)
 end
 
 axis([-90 90 zb2(end) zb2(1)]);
-%set(gca,'TickDir','out');
-%caxis(opt.clevs([2 end]));
 
-
+%%-----------------------------------------------------%%
+%%   Add in text in bottom right corner if in options  %%
+%%-----------------------------------------------------%%
 % text in bot right corner
 if isfield(opt,'latex')
   text(70,-5.3e3,opt.latex,'horizontalAlignment','center','fontsize',14,'interpreter','latex')
 elseif isfield(opt,'txt')
   text(70,-5.5e3,opt.txt,'horizontalAlignment','center','fontsize',12)
 end
-
-
