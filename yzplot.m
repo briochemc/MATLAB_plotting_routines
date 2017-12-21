@@ -6,7 +6,7 @@ y2 = opt.grid.yt ;
 z2 = -[opt.grid.zt sum(opt.grid.dzt) sum(opt.grid.dzt)+100] ;
 A2 = [x2d;nan(2,size(x2d,2))] ;
 
-x2d2 = extrapolate_nans_fast(A2) ;
+x2d2 = extrapolate_nans_fast(extrapolate_nans_fast(A2)) ;
 if isfield(opt,'pden')
   contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
   h = gca;
@@ -20,7 +20,7 @@ else
   elseif isfield(opt,'dash_clevs')
     h = contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
     hold on
-    contour(y2,z2,x2d2,opt.clevs) ;
+    contour(y2,z2,x2d2,opt.clevs,'linewidth',1) ;
     contour(y2,z2,x2d2,opt.line_clevs,'k') ;
     contour(y2,z2,x2d2,opt.dash_clevs,'k--') ;
   else
