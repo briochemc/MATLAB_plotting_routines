@@ -32,7 +32,7 @@ if isfield(opt,'white_clevs')
   contour(y2,z2,x2d2,opt.white_clevs,'w') ;
 end
 if isfield(opt,'clevs_labels')
-  clabel(C,h,opt.black_clevs_labels) ;
+  clabel(C,h,opt.clevs_labels) ;
 end
 
 %%-----------------------------------------------------%%
