@@ -13,7 +13,7 @@ x2d2 = extrapolate_nans_fast(extrapolate_nans_fast(A2)) ;
 % plot thick contour lines first (so that these fill the gaps when printing)
 contour(y2,z2,x2d2,opt.clevs,'linewidth',2) ;
 hold on
-h = contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
+[C,h] = contourf(y2,z2,x2d2,opt.clevs,'linestyle','none') ;
 
 %%-----------------------------------------------------%%
 %%  Plot the additional contours requested in options  %%
@@ -26,11 +26,13 @@ if isfield(opt,'dash_clevs') % add in dashed
   contour(y2,z2,x2d2,opt.dash_clevs,'k--') ;
 end
 if isfield(opt,'black_clevs')
-  [Cblack,hblack] = contour(y2,z2,x2d2,opt.black_clevs,'k') ;
-  if isfield(opt,'black_clevs_labels') clabel(Cblack,hblack) ; end
+  contour(y2,z2,x2d2,opt.black_clevs,'k') ;
 end
 if isfield(opt,'white_clevs')
   contour(y2,z2,x2d2,opt.white_clevs,'w') ;
+end
+if isfield(opt,'clevs_labels')
+  clabel(C,h,opt.black_clevs_labels) ;
 end
 
 %%-----------------------------------------------------%%
@@ -63,12 +65,12 @@ P = mask2poly(boolean(z_bw)) ;
 orient = [0] ; % This needs to be set manually unfortunately
 for ii = 1:numel(orient)
   hold on
-  if orient(ii) 
-    Ps(ii) = polyDiag2polySquare(P(ii)) ; 
+  if orient(ii)
+    Ps(ii) = polyDiag2polySquare(P(ii)) ;
   else
     P(ii).X = fliplr(P(ii).X) ;
     P(ii).Y = fliplr(P(ii).Y) ;
-    Ps(ii) = polyDiag2polySquare(P(ii)) ; 
+    Ps(ii) = polyDiag2polySquare(P(ii)) ;
   end
   XY2 = [Ps(ii).X' Ps(ii).Y']+.5 ;
   XY = [yb(XY2(:,1))'  zb2(XY2(:,2))'] ;
