@@ -26,7 +26,8 @@ if isfield(opt,'dash_clevs') % add in dashed
   contour(y2,z2,x2d2,opt.dash_clevs,'k--') ;
 end
 if isfield(opt,'black_clevs')
-  contour(y2,z2,x2d2,opt.black_clevs,'k') ;
+  [Cblack,hblack] = contour(y2,z2,x2d2,opt.black_clevs,'k') ;
+  if isfield(opt,'black_clevs_labels') clabel(Cblack,hblack) ; end
 end
 if isfield(opt,'white_clevs')
   contour(y2,z2,x2d2,opt.white_clevs,'w') ;
