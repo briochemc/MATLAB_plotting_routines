@@ -28,7 +28,7 @@ hold on
 %%  Plot the additional contours requested in options  %%
 %%-----------------------------------------------------%%
 if isfield(opt,'black_clevs')
-  [Cblack,hblack] = contour(x3,opt.grid.yt,x2d2,opt.clevs,'k') ;
+  [Cblack,hblack] = contour(x3,opt.grid.yt,x2d2,opt.black_clevs,'k') ;
 end
 if isfield(opt,'white_clevs')
   contour(y2,z2,x2d2,opt.white_clevs,'w') ;
