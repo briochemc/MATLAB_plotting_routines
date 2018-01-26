@@ -1,6 +1,9 @@
 function h = xyplot_v5(x2d,opt)
 % latlon is 2x1 and is 0 or 1 for plotting lat and lon
 
+%%-----------------------------------------------------%%
+%%                Plot the filled contour              %%
+%%-----------------------------------------------------%%
 % make border coordinates
 yb = [opt.grid.yv(1)-opt.grid.dyt(1) opt.grid.yv] ;
 xb = [opt.grid.xu(1)-opt.grid.dxt(1) opt.grid.xu] ;
@@ -16,12 +19,27 @@ xb3 = [xb2(end)-360 xb2 xb2(1)+360] ;
 A3 = [A2(:,end) A2 A2(:,1)] ;
 
 x2d2 = inpaint_nans3(A3) ;
-if ~isfield(opt,'linestyle')
-  contourf(x3,opt.grid.yt,x2d2,opt.clevs,'linestyle','none') ;
-else
-  contourf(x3,opt.grid.yt,x2d2,opt.clevs,opt.linestyle) ;
-end
+contour(x3,opt.grid.yt,x2d2,opt.clevs,'linewidth',2) ;
+hold on
+[C,h] = contourf(x3,opt.grid.yt,x2d2,opt.clevs,'linestyle','none') ;
 % make nanContourf
+
+%%-----------------------------------------------------%%
+%%  Plot the additional contours requested in options  %%
+%%-----------------------------------------------------%%
+if isfield(opt,'black_clevs')
+  [Cblack,hblack] = contour(x3,opt.grid.yt,x2d2,opt.clevs,'k') ;
+end
+if isfield(opt,'white_clevs')
+  contour(y2,z2,x2d2,opt.white_clevs,'w') ;
+end
+if isfield(opt,'black_clevs_labels')
+  clabel(Cblack,hblack,opt.black_clevs_labels) ;
+end
+
+
+
+
 
 % labels and axis stuff
 set(gca,'YTick',opt.yTicks);
