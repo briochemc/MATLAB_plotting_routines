@@ -79,5 +79,5 @@ axis([xb2(1) xb2(end) -90 90]);
 h = gca;
 
 if isfield(opt,'latex')
-  text(50,34,opt.latex,'horizontalAlignment','left','verticalAlignment','baseline','interpreter','latex','fontsize',16)
+  text(80,45,opt.latex,'horizontalAlignment','center','verticalAlignment','baseline','interpreter','latex','fontsize',16)
 end
