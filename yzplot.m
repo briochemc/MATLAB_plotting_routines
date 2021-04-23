@@ -61,7 +61,7 @@ zb2 = -[zb zb(end)+50 ceil((zb(end)+50)*1e-3)*1e3] ;
 z_bw = zeros(size(A2)) ;
 z_bw(find(isnan(A2))) = 1 ;
 gray = .8*[1 1 1] ;
-P = mask2poly(boolean(z_bw)) ;
+P = mask2poly(z_bw == 1) ;
 orient = [0] ; % This needs to be set manually unfortunately
 for ii = 1:numel(orient)
   hold on
