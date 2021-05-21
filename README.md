@@ -74,10 +74,45 @@ colorbar
 ### joint PDF
 
 ```matlab
-N = 2000 ; % number of data points
-obs = exp(randn(N, 1)) ;          % fake observations data
-model = sqrt(obs) + randn(N, 1) ; % fake model data
-v = ones(N, 1) ;                  % fake volume boxes (can use AO volumes)
-jointPDF(obs, model, v) ;
+figure(1)
+N = 2000 ; % number of data points / 2
+obs = 5 + 2 * randn(N, 1) ;             % fake observations data
+model = 1.1 * obs + 0.6 * randn(N, 1) ; % fake model data
+obs = obs + 0.2 * randn(N, 1) ;         % add noise to obs
+v = ones(N, 1) ;                        % fake volume boxes (can use AO volumes)
+
+jpdf = subplot(1,2,2)
+clevs = 0:10:100
+jointPDF(obs, model, v, 'clevs', clevs/100) ; % the plotting function
+axis square
+xlim([-2, 12])
+ylim([-2, 12])
+xlabel('observations')
+ylabel('model')
+title('jointPDF')
+% colorbar
+subplot('position', [.93 .3 0.02 .4]) % Set the correct sizes
+percentiles = 0:0.1:100 ;
+contourf([0 1], percentiles, kron([1 1], percentiles'), clevs(1:end-1), 'linestyle', 'none')
+%caxis([0 100]) ;
+set(gca, 'YAxisLocation', 'right')
+set(gca, 'xtick', [])
+set(gca, 'ytick', clevs)
+ylabel('percentile')
+cAx = caxis ;
+axes(jpdf) ; caxis(cAx/100) ;
+
+subplot(1,2,1)
+scatter(obs, model)
+axis square
+xlim([-2, 12])
+ylim([-2, 12])
+xlabel('observations')
+ylabel('model')
+title('scatter')
 ```
+
+which should look like:
+
+![jointPDF_example](https://user-images.githubusercontent.com/4486578/119079865-5910a800-ba3c-11eb-9912-421824f689db.png)
 
