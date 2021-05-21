@@ -32,7 +32,9 @@ You don't really need to install this for the functions to work, although some o
 - Add functions
   - [x] `inpaint_nans3`
 
-## Example AO use
+## Examples
+
+### Latitude–depth plot:
 
 ```matlab
 % load the ao MAT file (you might have to change that)
@@ -68,3 +70,14 @@ opt.grid.zw = ao.depth - ao.height / 2
 yzplot(tracer_2d', opt) ;
 colorbar
 ```
+
+### joint PDF
+
+```matlab
+N = 2000 ; % number of data points
+obs = exp(randn(N, 1)) ;          % fake observations data
+model = sqrt(obs) + randn(N, 1) ; % fake model data
+v = ones(N, 1) ;                  % fake volume boxes (can use AO volumes)
+jointPDF(obs, model, v) ;
+```
+
